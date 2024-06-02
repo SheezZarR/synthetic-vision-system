@@ -1,0 +1,247 @@
+[gd_scene load_steps=15 format=3 uid="uid://cl1mul6r4jdsb"]
+
+[ext_resource type="Texture2D" uid="uid://cs6c6ben6g250" path="res://textures/Compass-rose-32-pt.svg.png" id="1_r8brx"]
+[ext_resource type="Texture2D" uid="uid://b5nw7ky71tqtp" path="res://textures/indicator.png" id="2_womuj"]
+[ext_resource type="PackedScene" uid="uid://b3viahir7kjgu" path="res://models/plane.blend" id="4_b5sqc"]
+[ext_resource type="Script" path="res://scripts/3D/Airplane.gd" id="5_vhwmu"]
+[ext_resource type="Script" path="res://scripts/3D/TrajectoryLine.gd" id="6_28sdy"]
+[ext_resource type="Shader" path="res://shaders/LineShader.gdshader" id="7_81o2c"]
+[ext_resource type="Script" path="res://scripts/3D/TrajectoryModel.gd" id="7_iufd1"]
+[ext_resource type="PackedScene" uid="uid://bmcve56134qpe" path="res://models/srtm90.blend" id="8_j6ioa"]
+[ext_resource type="Script" path="res://scripts/3D/EarthSurface.gd" id="9_0iwvp"]
+[ext_resource type="Script" path="res://scripts/3D/DangerArea.gd" id="10_nq8ru"]
+
+[sub_resource type="Curve3D" id="Curve3D_56hma"]
+bake_interval = 90.0
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.59961, 25.0278, -387.68),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ybsmh"]
+render_priority = 0
+shader = ExtResource("7_81o2c")
+shader_parameter/albedoColor = Color(0.451, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3i6wr"]
+albedo_color = Color(1, 0, 0.0156863, 1)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_k0wnw"]
+_surfaces = [{
+"aabb": AABB(-90, 101.61, -90, 270, 898.89, 270),
+"format": 34359742465,
+"index_count": 54,
+"index_data": PackedByteArray(4, 0, 1, 0, 0, 0, 4, 0, 5, 0, 1, 0, 5, 0, 2, 0, 1, 0, 5, 0, 6, 0, 2, 0, 6, 0, 3, 0, 2, 0, 6, 0, 7, 0, 3, 0, 8, 0, 5, 0, 4, 0, 8, 0, 9, 0, 5, 0, 9, 0, 6, 0, 5, 0, 9, 0, 10, 0, 6, 0, 10, 0, 7, 0, 6, 0, 10, 0, 11, 0, 7, 0, 12, 0, 9, 0, 8, 0, 12, 0, 13, 0, 9, 0, 13, 0, 10, 0, 9, 0, 13, 0, 14, 0, 10, 0, 14, 0, 11, 0, 10, 0, 14, 0, 15, 0, 11, 0),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray(0, 0, 180, 194, 0, 32, 122, 68, 0, 0, 180, 194, 0, 0, 180, 194, 0, 32, 122, 68, 0, 0, 0, 0, 0, 0, 180, 194, 0, 32, 122, 68, 0, 0, 180, 66, 0, 0, 180, 194, 0, 32, 122, 68, 0, 0, 52, 67, 0, 0, 0, 0, 0, 32, 122, 68, 0, 0, 180, 194, 0, 0, 0, 0, 82, 56, 203, 66, 0, 0, 0, 0, 0, 0, 0, 0, 143, 194, 211, 66, 0, 0, 180, 66, 0, 0, 0, 0, 205, 76, 214, 66, 0, 0, 52, 67, 0, 0, 180, 66, 0, 32, 122, 68, 0, 0, 180, 194, 0, 0, 180, 66, 113, 61, 209, 66, 0, 0, 0, 0, 0, 0, 180, 66, 143, 194, 209, 66, 0, 0, 180, 66, 0, 0, 180, 66, 205, 76, 210, 66, 0, 0, 52, 67, 0, 0, 52, 67, 0, 32, 122, 68, 0, 0, 180, 194, 0, 0, 52, 67, 113, 61, 211, 66, 0, 0, 0, 0, 0, 0, 52, 67, 174, 199, 211, 66, 0, 0, 180, 66, 0, 0, 52, 67, 205, 76, 210, 66, 0, 0, 52, 67)
+}]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.969978, 0.243192, 0, -0.243192, 0.969978, 0, 398.212, 0)
+
+[node name="Airplane" parent="." node_paths=PackedStringArray("trajectory", "rollValueLabel", "pitchValueLabel", "heightValueLabel", "yawValueLabel", "compass") instance=ExtResource("4_b5sqc")]
+transform = Transform3D(0.939208, -0.157351, 0.305171, 0.162701, 0.986643, 0.00799353, -0.302352, 0.042144, 0.952265, 60544.5, 70.58, 106130)
+top_level = true
+script = ExtResource("5_vhwmu")
+trajectory = NodePath("Trajectory")
+rollValueLabel = NodePath("../CanvasLayer/Common Data/RollValue")
+pitchValueLabel = NodePath("../CanvasLayer/Common Data/PitchValue")
+heightValueLabel = NodePath("../CanvasLayer/Common Data/HeightValue")
+yawValueLabel = NodePath("../CanvasLayer/Compass Indicator Container/YawValue")
+compass = NodePath("../CanvasLayer/CompasContainer/Compass")
+
+[node name="Camera3D" type="Camera3D" parent="Airplane"]
+transform = Transform3D(0.999573, 0.00198499, -0.0291454, 0.00644379, 0.958133, 0.286252, 0.0284934, -0.286317, 0.957711, -0.306641, 6.40088, 5.29688)
+visible = false
+
+[node name="Trajectory" type="Path3D" parent="Airplane" node_paths=PackedStringArray("lineModel", "airplane", "earthSufrace", "dangerArea")]
+curve = SubResource("Curve3D_56hma")
+script = ExtResource("6_28sdy")
+timeHorizon = 120
+lineModel = NodePath("../Line")
+airplane = NodePath("..")
+earthSufrace = NodePath("../../srtm90")
+dangerArea = NodePath("../../Danger Area")
+
+[node name="Line" type="CSGPolygon3D" parent="Airplane" node_paths=PackedStringArray("dangerLabel")]
+polygon = PackedVector2Array(0, 0, 0.00395203, 0.25135, 0.275436, 0.250389, 0.285492, 0.0118561)
+mode = 2
+path_node = NodePath("../Trajectory")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = true
+path_continuous_u = true
+path_u_distance = 0.81
+path_joined = false
+material = SubResource("ShaderMaterial_ybsmh")
+script = ExtResource("7_iufd1")
+dangerLabel = NodePath("../../CanvasLayer/Danger Text Container/Danger Text")
+
+[node name="srtm90" parent="." instance=ExtResource("8_j6ioa")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.179688, 0, 0.726562)
+script = ExtResource("9_0iwvp")
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53890.3, -514.37, 98028.5)
+radius = 3.517
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 105, 90)
+radius = 3.517
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
+radius = 3.517
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 105, 0)
+radius = 3.517
+
+[node name="Danger Area" type="MeshInstance3D" parent="." node_paths=PackedStringArray("earthSurface")]
+material_override = SubResource("StandardMaterial3D_3i6wr")
+mesh = SubResource("ArrayMesh_k0wnw")
+script = ExtResource("10_nq8ru")
+earthSurface = NodePath("../srtm90")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CompasContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Compass" type="Sprite2D" parent="CanvasLayer/CompasContainer"]
+position = Vector2(0, 130.715)
+rotation = 1.88093
+scale = Vector2(0.402611, 0.400561)
+texture = ExtResource("1_r8brx")
+
+[node name="Compass Indicator Container" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_top = -140.0
+offset_right = 12.0
+offset_bottom = -117.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Indicator" type="Sprite2D" parent="CanvasLayer/Compass Indicator Container"]
+position = Vector2(25, 40)
+scale = Vector2(0.6, 1)
+texture = ExtResource("2_womuj")
+
+[node name="YawValue" type="Label" parent="CanvasLayer/Compass Indicator Container"]
+layout_mode = 2
+text = "252.23°"
+horizontal_alignment = 1
+
+[node name="Common Data" type="GridContainer" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.147
+anchor_top = 0.412
+anchor_right = 0.147
+anchor_bottom = 0.412
+offset_top = -38.5
+offset_right = 104.0
+offset_bottom = 38.5
+grow_vertical = 2
+columns = 2
+
+[node name="Roll" type="Label" parent="CanvasLayer/Common Data"]
+layout_mode = 2
+text = "Крен
+"
+
+[node name="RollValue" type="Label" parent="CanvasLayer/Common Data"]
+layout_mode = 2
+text = "9.3°"
+
+[node name="Pitch" type="Label" parent="CanvasLayer/Common Data"]
+layout_mode = 2
+text = "Тангаж"
+
+[node name="PitchValue" type="Label" parent="CanvasLayer/Common Data"]
+layout_mode = 2
+text = "-0.4°"
+
+[node name="Height" type="Label" parent="CanvasLayer/Common Data"]
+layout_mode = 2
+text = "Высота"
+
+[node name="HeightValue" type="Label" parent="CanvasLayer/Common Data"]
+layout_mode = 2
+text = "70.58"
+
+[node name="Flight Controls" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -91.0
+offset_top = -68.0
+offset_bottom = 68.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Launch" type="Button" parent="CanvasLayer/Flight Controls"]
+layout_mode = 2
+text = "Запуск"
+
+[node name="Takeoff Recording" type="Button" parent="CanvasLayer/Flight Controls"]
+layout_mode = 2
+text = "Запись 1"
+
+[node name="Loop Recording" type="Button" parent="CanvasLayer/Flight Controls"]
+layout_mode = 2
+text = "Запись 2"
+
+[node name="Reset" type="Button" parent="CanvasLayer/Flight Controls"]
+layout_mode = 2
+text = "Сброс"
+
+[node name="Danger Text Container" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = 0.474
+anchor_top = 0.01
+anchor_right = 0.5
+anchor_bottom = 0.017
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="Danger Text" type="Label" parent="CanvasLayer/Danger Text Container"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -71.5
+offset_right = 71.5
+offset_bottom = 23.0
+grow_horizontal = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[connection signal="pressed" from="CanvasLayer/Flight Controls/Launch" to="Airplane" method="toggle_movement"]
+[connection signal="pressed" from="CanvasLayer/Flight Controls/Takeoff Recording" to="Airplane" method="load_takeoff"]
+[connection signal="pressed" from="CanvasLayer/Flight Controls/Loop Recording" to="Airplane" method="load_loop"]
+[connection signal="pressed" from="CanvasLayer/Flight Controls/Reset" to="Airplane" method="reset_movement"]
